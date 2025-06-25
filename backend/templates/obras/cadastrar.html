@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Custom CSS for modern styling -->
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .form-card {
+            transition: box-shadow 0.2s;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        .form-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-content {
+            padding: 20px;
+        }
+        .form-actions {
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 10px;
+        }
+        .btn-modern {
+            border-radius: 25px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 1px solid #ced4da;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        .text-danger {
+            font-size: 0.875rem;
+        }
+        @media (max-width: 576px) {
+            .form-card {
+                margin-bottom: 20px;
+            }
+            .form-actions {
+                flex-direction: column;
+            }
+            .btn-modern {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="container my-5">
+        <h1 class="text-center mb-5 fw-bold">Cadastrar Nova Obra</h1>
+        
+        <!-- Form -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-card">
+                    <div class="form-content">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <!-- Common Fields -->
+                            <div class="mb-3">
+                                <label for="{{ form.titulo.id_for_label }}" class="form-label">Título</label>
+                                {{ form.titulo }}
+                                {% if form.titulo.errors %}
+                                    <div class="text-danger">{{ form.titulo.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.ano_lancamento.id_for_label }}" class="form-label">Ano de Lançamento</label>
+                                {{ form.ano_lancamento }}
+                                {% if form.ano_lancamento.errors %}
+                                    <div class="text-danger">{{ form.ano_lancamento.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.tipo.id_for_label }}" class="form-label">Tipo</label>
+                                {{ form.tipo }}
+                                {% if form.tipo.errors %}
+                                    <div class="text-danger">{{ form.tipo.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.genero.id_for_label }}" class="form-label">Gênero</label>
+                                {{ form.genero }}
+                                {% if form.genero.errors %}
+                                    <div class="text-danger">{{ form.genero.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.sinopse.id_for_label }}" class="form-label">Sinopse</label>
+                                {{ form.sinopse }}
+                                {% if form.sinopse.errors %}
+                                    <div class="text-danger">{{ form.sinopse.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.diretor.id_for_label }}" class="form-label">Diretor</label>
+                                {{ form.diretor }}
+                                {% if form.diretor.errors %}
+                                    <div class="text-danger">{{ form.diretor.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.poster.id_for_label }}" class="form-label">Poster</label>
+                                {{ form.poster }}
+                                {% if form.poster.errors %}
+                                    <div class="text-danger">{{ form.poster.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Conditional Fields for Movie -->
+                            <div id="movie-fields" class="mb-3" style="display: none;">
+                                <label for="{{ form.duracao_minutos.id_for_label }}" class="form-label">Duração (minutos)</label>
+                                {{ form.duracao_minutos }}
+                                {% if form.duracao_minutos.errors %}
+                                    <div class="text-danger">{{ form.duracao_minutos.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Conditional Fields for Series -->
+                            <div id="series-fields" class="mb-3" style="display: none;">
+                                <label for="{{ form.numero_temporadas.id_for_label }}" class="form-label">Número de Temporadas</label>
+                                {{ form.numero_temporadas }}
+                                {% if form.numero_temporadas.errors %}
+                                    <div class="text-danger">{{ form.numero_temporadas.errors }}</div>
+                                {% endif %}
+                                <label for="{{ form.numero_episodios.id_for_label }}" class="form-label">Número de Episódios</label>
+                                {{ form.numero_episodios }}
+                                {% if form.numero_episodios.errors %}
+                                    <div class="text-danger">{{ form.numero_episodios.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-modern">Cadastrar Obra</button>
+                                <a href="{% url 'listar-obras' %}" class="btn btn-secondary btn-modern">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Conditional Fields -->
+    <script defer>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tipoSelect = document.querySelector('#{{ form.tipo.id_for_label }}');
+            const movieFields = document.querySelector('#movie-fields');
+            const seriesFields = document.querySelector('#series-fields');
+
+            // Debugging: Log elements to check if they are found
+            console.log('tipoSelect:', tipoSelect);
+            console.log('movieFields:', movieFields);
+            console.log('seriesFields:', seriesFields);
+
+            if (!tipoSelect || !movieFields || !seriesFields) {
+                console.error('One or more elements not found. Check IDs and template rendering.');
+                return;
+            }
+
+            function toggleFields() {
+                const tipoValue = tipoSelect.value.toLowerCase(); // Case-insensitive comparison
+                console.log('Selected tipo value:', tipoValue); // Debugging
+
+                if (tipoValue === 'filme') {
+                    movieFields.style.display = 'block';
+                    seriesFields.style.display = 'none';
+                    // Clear series fields
+                    const temporadasInput = document.querySelector('#{{ form.numero_temporadas.id_for_label }}');
+                    const episodiosInput = document.querySelector('#{{ form.numero_episodios.id_for_label }}');
+                    if (temporadasInput) temporadasInput.value = '';
+                    if (episodiosInput) episodiosInput.value = '';
+                } else if (tipoValue === 'série' || tipoValue === 'serie') { // Handle both 'Série' and 'serie'
+                    movieFields.style.display = 'none';
+                    seriesFields.style.display = 'block';
+                    // Clear movie field
+                    const duracaoInput = document.querySelector('#{{ form.duracao_minutos.id_for_label }}');
+                    if (duracaoInput) duracaoInput.value = '';
+                } else {
+                    movieFields.style.display = 'none';
+                    seriesFields.style.display = 'none';
+                }
+            }
+
+            // Run on page load
+            toggleFields();
+            // Run on change
+            tipoSelect.addEventListener('change', toggleFields);
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+{% endblock %}

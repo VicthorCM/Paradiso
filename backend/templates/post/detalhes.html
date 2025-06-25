@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Custom CSS for modern styling -->
+    <style>
+  :root {
+    --nl1: #164773;
+    --nl2: #0B2B40;
+    --nl3: #1E5959;
+    --nl4: #3B8C6E;
+    --nl5: #89D99D;
+    --text-light: #f1f5f9;
+    --text-muted: #cbd5e1;
+  }
+
+  body {
+    background-color: var(--nl2);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .post-card, .comment-card, .form-card {
+    background-color: var(--nl3);
+    color: var(--text-light);
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s;
+  }
+
+  .post-card:hover, .comment-card:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .post-header, .comment-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--nl1);
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--nl4);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-right: 10px;
+  }
+
+  .post-content, .comment-content {
+    padding: 20px;
+  }
+
+  .post-content h5 a {
+    color: var(--nl5);
+    text-decoration: none;
+  }
+
+  .post-content p,
+  .comment-content p {
+    color: var(--text-muted);
+  }
+
+  .post-actions, .form-actions {
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-modern {
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .btn-primary {
+    background-color: var(--nl1);
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--nl4);
+  }
+
+  .form-label {
+    color: var(--nl5);
+  }
+
+  .form-control {
+    border-radius: 10px;
+    background-color: var(--nl2);
+    color: var(--text-light);
+    border: 1px solid #444;
+  }
+
+  .form-control::placeholder {
+    color: #aaa;
+  }
+
+  .no-comments {
+    background-color: var(--nl3);
+    border-radius: 15px;
+    padding: 20px;
+    color: var(--text-muted);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h1, h3, h4 {
+    color: var(--nl5) !important;
+  }
+
+
+  small.text-muted {
+    color: var(--text-muted) !important;
+  }
+
+  a {
+    color: var(--nl5);
+  }
+
+  a:hover {
+    color: var(--nl4);
+  }
+
+  @media (max-width: 576px) {
+    .post-card, .comment-card, .form-card {
+      margin-bottom: 20px;
+    }
+
+    .post-actions, .form-actions {
+      flex-direction: column;
+    }
+
+    .btn-modern {
+      width: auto;
+    }
+  }
+</style>
+
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Post Details -->
+        <h1 class="text-center mb-5 fw-bold text-center">{{ post.titulo_post }}</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-12">
+                <div class="post-card mb-5">
+                    <!-- Post Header -->
+                    <div class="post-header">
+                        <div class="avatar">
+                            {{ post.user.username|slice:":1"|upper }}
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">{{ post.user.username }}</h6>
+                            <small class="text-muted">{{ post.createdcriado|date:"d/m/Y H:i" }}</small>
+                        </div>
+                    </div>
+                    <!-- Post Content -->
+                    <div class="post-content">
+                        <h5 class="fw-semibold">Sobre: <a href="{% url 'detalhes-obra' post.obra.id %}" style="text-decoration: none; ">{{ post.obra }}</a></h5>
+                        <p class="text-secondary">{{ post.descrição|default:"Sem descrição" }}</p>
+                    </div>
+                    <!-- Post Actions -->
+                    <div class="post-actions">
+                        <a href="{% url 'home' %}" class="btn btn-primary btn-modern">Voltar</a>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <h3 class="mb-3 ">Comentários</h3>
+                {% for comentario in comentarios %}
+                    <div class="comment-card mb-3">
+                        <!-- Comment Header -->
+                        <div class="post-header">
+                            <div class="avatar">
+                                {{ comentario.user.username|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">{{ comentario.user.username }}</h6>
+                                <small class="">{{ comentario.criado|timesince }}</small>
+                            </div>
+                        </div>
+                        <!-- Comment Content -->
+                        <div class="comment-content">
+                            <p class="">{{ comentario.texto }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="no-comments text-center">
+                        <p class=" mb-0">Nenhum comentário ainda. Seja o primeiro a comentar!</p>
+                    </div>
+                {% endfor %}
+
+                <!-- Comment Form -->
+                {% if user.is_authenticated %}
+                    <h4 class="mt-4 ">Adicionar Comentário</h4>
+                    <div class="form-card">
+                        <div class="post-content">
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="{{ form.texto.id_for_label }}" class="form-label fw-semibold">Seu Comentário</label>
+                                    {{ form.texto }}
+                                    {% if form.texto.errors %}
+                                        <div class="text-danger">{{ form.texto.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary btn-modern">Enviar Comentário</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-4">Faça <a href="{% url 'login' %}">login</a> para comentar.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock %}
