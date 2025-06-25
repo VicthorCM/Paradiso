@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">📢 Feed de Publicações</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding post-feed" id="main-content">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="posts.length > 0; else vazio">
+    <ion-card *ngFor="let post of posts" class="post-card">
+      <ion-card-header class="header-flex">
+        <div>
+          <ion-card-title>{{ post.titulo_post }}</ion-card-title>
+          <ion-card-subtitle>{{ post.criado | date: 'dd/MM/yyyy HH:mm' }}</ion-card-subtitle>
+          <ion-card-subtitle>Obra: {{ post.nome_obra}}</ion-card-subtitle>
+          <ion-text color="medium" class="autor-text"> {{ post.user_username }}</ion-text>
+        </div>
+
+        <ion-buttons slot="end">
+          <ion-button
+            fill="clear"
+            size="small"
+            (click)="editarPost(post)"
+            aria-label="Editar post"
+          >
+            <ion-icon [icon]="pencilOutline"></ion-icon>
+          </ion-button>
+
+          <ion-button
+            fill="clear"
+            size="small"
+            (click)="excluirPost(post)"
+            aria-label="Excluir post"
+          >
+            <ion-icon [icon]="trashOutline"></ion-icon>
+          </ion-button>
+
+          <ion-button
+            fill="clear"
+            size="small"
+            (click)="verDetalhes(post)"
+            aria-label="Ver detalhes do post"
+          >
+            <ion-icon [icon]="eyeOutline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p>{{ post.descricao }}</p>
+
+        <!-- Campo de comentário -->
+        <ion-item class="comment-input-section" lines="none">
+          <ion-input
+            placeholder="Escreva um comentário..."
+            [(ngModel)]="newCommentText[post.id!]"
+            (keyup.enter)="addComment(post.id!, newCommentText[post.id!])"
+            class="rounded-md"
+          ></ion-input>
+          <ion-button
+            fill="clear"
+            size="small"
+            color="primary"
+            (click)="addComment(post.id!, newCommentText[post.id!])"
+            aria-label="Adicionar comentário"
+          >
+            <ion-icon [icon]="send"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <div *ngIf="post.comentarios.length > 0" class="comentarios-section">
+          <h4>Comentários ({{ post.comentarios.length }})</h4>
+          <ion-list>
+            <ion-item *ngFor="let comentario of post.comentarios" lines="none">
+              <ion-label>
+                <p><strong>{{ comentario.user.username }}</strong></p>
+                <p>{{ comentario.texto }}</p>
+                <p class="comentario-data">{{ comentario.criado | date:'dd/MM/yyyy HH:mm' }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <div *ngIf="post.comentarios.length === 0" class="no-comments-message ion-text-center ion-padding-top">
+          <p>Nenhum comentário ainda. Seja o primeiro a comentar!</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <ng-template #vazio>
+    <ion-text color="medium" class="ion-text-center">
+      <p>Nenhuma publicação encontrada.</p>
+    </ion-text>
+  </ng-template>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="criarPost()" aria-label="Criar novo post">
+      <ion-icon [icon]="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

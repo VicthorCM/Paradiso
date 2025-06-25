@@ -77,9 +77,7 @@ class ObraListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-       
-        serializer.save()
+    
 
 
 class ObraRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):

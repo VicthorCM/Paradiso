@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Criar Post</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (submit)="salvarPost()">
+    <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input [(ngModel)]="titulo_post" name="titulo_post" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Descrição</ion-label>
+      <ion-textarea [(ngModel)]="descricao" name="descricao" required></ion-textarea>
+    </ion-item>
+    <ion-item>
+  <ion-label position="floating">Obra</ion-label>
+  <ion-select [(ngModel)]="obraSelecionada" name="obraSelecionada" required>
+    <ion-select-option *ngFor="let obra of obras" [value]="obra.id">
+      {{ obra.titulo }} ({{ obra.ano_lancamento }})
+    </ion-select-option>
+  </ion-select>
+</ion-item>
+
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">
+      Salvar
+    </ion-button>
+  </form>
+</ion-content>

@@ -1,0 +1,46 @@
+ion-toolbar[color="light"] {
+  --background: #6b8e23;
+  --color: #fff;
+}
+
+.post-feed {
+  --ion-background-color: #f4f1ed;
+  background: var(--ion-background-color);
+}
+
+.post-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 16px;
+}
+
+.autor-text {
+  font-size: 0.8em;
+  color: #5a5a5a;
+}
+
+.comentarios-section {
+  background-color: #fdfdfc;
+  border-left: 4px solid #6b8e23;
+  padding: 12px;
+  border-radius: 8px;
+
+  h4 {
+    color: #8b5e3c;
+  }
+}
+
+.comment-input-section {
+  border: 1px solid #dcd9d4;
+  background: #fff;
+
+  ion-button {
+    color: #6b8e23;
+  }
+}
+
+ion-fab-button {
+  --background: #8b5e3c;
+  --color: #fff;
+}

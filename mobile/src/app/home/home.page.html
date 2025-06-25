@@ -1,0 +1,49 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div id="container">
+    <form (ngSubmit)="autenticarUsuario()" #loginForm="ngForm" novalidate>
+
+      <ion-list lines="full">
+
+        <ion-item>
+          <ion-label position="floating">Usuário</ion-label>
+          <ion-input 
+            type="text" 
+            name="usuario" 
+            [(ngModel)]="instancia.username" 
+            required
+            autocomplete="username"
+            #usuario="ngModel"
+          ></ion-input>
+        </ion-item>
+        <div class="error" *ngIf="usuario.invalid && usuario.touched">
+          O usuário é obrigatório.
+        </div>
+
+        <ion-item>
+          <ion-label position="floating">Senha</ion-label>
+          <ion-input 
+            type="password" 
+            name="senha" 
+            [(ngModel)]="instancia.password" 
+            required
+            autocomplete="current-password"
+            #senha="ngModel"
+          ></ion-input>
+        </ion-item>
+        <div class="error" *ngIf="senha.invalid && senha.touched">
+          A senha é obrigatória.
+        </div>
+
+      </ion-list>
+
+      <ion-button 
+        expand="block" 
+        type="submit" 
+        [disabled]="loginForm.invalid"
+      >
+        Autenticar
+      </ion-button>
+
+    </form>
+  </div>
+</ion-content>

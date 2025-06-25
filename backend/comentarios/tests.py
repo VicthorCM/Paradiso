@@ -23,14 +23,14 @@ class ComentarioAPITestCase(APITestCase):
             descricao='Conteúdo do post',
             obra=self.obra
         )
-        self.list_url = reverse('listar-api-comentario')  # exemplo, substitua pelo nome correto da sua url
-        self.create_url = reverse('criar-api-comentario')  # idem
+        self.list_url = reverse('listar-api-comentario')  
+        self.create_url = reverse('criar-api-comentario')  
         
-        # Para autenticar o usuário (se necessário)
+        
         self.client.force_authenticate(user=self.user)
 
     def test_listar_comentarios_autenticado(self):
-        # Criar comentários de teste
+        
         Comentario.objects.create(user=self.user, post=self.post, texto="Comentário 1")
         Comentario.objects.create(user=self.user, post=self.post, texto="Comentário 2")
 
@@ -49,7 +49,7 @@ class ComentarioAPITestCase(APITestCase):
         data = {
             'post': self.post.id,
             'texto': 'Comentário criado via API',
-            'user': self.user.id  # seu perform_create usa self.request.data['user']
+            'user': self.user.id  
         }
         response = self.client.post(self.create_url, data)
 
@@ -65,4 +65,4 @@ class ComentarioAPITestCase(APITestCase):
             'texto': 'Comentário sem usuário',
         }
         response = self.client.post(self.create_url, data)
-        self.assertEqual(response.status_code, 400)  # Bad Request
+        self.assertEqual(response.status_code, 400)  

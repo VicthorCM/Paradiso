@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Editar Publicação</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="salvarPost()">
+    <ion-item>
+      <ion-label position="stacked">Título</ion-label>
+      <ion-input [(ngModel)]="titulo_post" name="titulo_post" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Descrição</ion-label>
+      <ion-textarea [(ngModel)]="descricao" name="descricao" autoGrow required></ion-textarea>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">Salvar</ion-button>
+  </form>
+</ion-content>
